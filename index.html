@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Art Creator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pixel Pusher</h1>
+        <div class="controls">
+            <input type="color" id="colorPicker" value="#000000">
+            <button id="clearButton">Clear Canvas</button>
+            <button id="darkModeToggle">Toggle Dark Mode</button>
+            <button id="exportButton">Export as PNG</button>
+            <select id="gridSize">
+                <option value="16">16x16</option>
+                <option value="32" selected>32x32</option>
+                <option value="64">64x64</option>
+            </select>
+        </div>
+        <div id="canvas"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
