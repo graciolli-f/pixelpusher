@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDarkMode = false;
     let pixelSize = parseInt(gridSizeSelect.value);
 
+    const exportWithGridButton = document.getElementById('exportWithGridButton');
+    const exportWithoutGridButton = document.getElementById('exportWithoutGridButton');
+
     function createGrid() {
         canvas.innerHTML = '';
         canvas.style.gridTemplateColumns = `repeat(${pixelSize}, 1fr)`;
@@ -68,29 +71,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Export as PNG functionality
-    exportButton.addEventListener('click', () => {
-        const tempCanvas = document.createElement('canvas');
-        const pixelDimension = Math.floor(543 / pixelSize) - 1;
-        tempCanvas.width = pixelSize * (pixelDimension + 1) - 1;
-        tempCanvas.height = pixelSize * (pixelDimension + 1) - 1;
-        const ctx = tempCanvas.getContext('2d');
+    function exportAsPNG(withGrid) {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const pixelSize = 16;
+        const gridSize = parseInt(document.getElementById('gridSize').value);
+        const canvasSize = gridSize * pixelSize;
 
-        // Draw grid
-        ctx.fillStyle = isDarkMode ? '#666' : '#ccc';
-        ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
 
-        document.querySelectorAll('.pixel').forEach((pixel, index) => {
-            const x = (index % pixelSize) * (pixelDimension + 1);
-            const y = Math.floor(index / pixelSize) * (pixelDimension + 1);
-            ctx.fillStyle = pixel.style.backgroundColor || (isDarkMode ? '#444' : 'white');
-            ctx.fillRect(x, y, pixelDimension, pixelDimension);
+        // Draw pixels
+        const pixels = document.querySelectorAll('.pixel');
+        pixels.forEach((pixel, index) => {
+            const x = (index % gridSize) * pixelSize;
+            const y = Math.floor(index / gridSize) * pixelSize;
+            ctx.fillStyle = pixel.style.backgroundColor || 'white';
+            ctx.fillRect(x, y, pixelSize, pixelSize);
         });
 
+        // Draw grid if withGrid is true
+        if (withGrid) {
+            ctx.strokeStyle = '#999';
+            ctx.lineWidth = 1;
+            for (let i = 1; i < gridSize; i++) {
+                const pos = i * pixelSize;
+                ctx.beginPath();
+                ctx.moveTo(pos, 0);
+                ctx.lineTo(pos, canvasSize);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(0, pos);
+                ctx.lineTo(canvasSize, pos);
+                ctx.stroke();
+            }
+        }
+
+        // Create download link
         const link = document.createElement('a');
-        link.download = 'pixel_art.png';
-        link.href = tempCanvas.toDataURL();
+        link.download = `pixel_art_${withGrid ? 'with' : 'without'}_grid.png`;
+        link.href = canvas.toDataURL();
         link.click();
-    });
+    }
+
+    // Event listeners for export buttons
+    exportWithGridButton.addEventListener('click', () => exportAsPNG(true));
+    exportWithoutGridButton.addEventListener('click', () => exportAsPNG(false));
 
     function updateColors() {
         canvas.style.backgroundColor = isDarkMode ? '#666' : '#ccc';

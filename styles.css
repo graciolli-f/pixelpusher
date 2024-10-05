@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
     transition: background-color 0.3s, color 0.3s;
@@ -16,9 +16,32 @@ body.dark-mode {
 
 .container {
     text-align: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
 }
 
 .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.grid-size-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
@@ -27,8 +50,7 @@ body.dark-mode {
     grid-template-columns: repeat(32, 16px);
     grid-gap: 1px;
     border: 1px solid #999;
-    width: 543px; /* (32 * 16px) + (31 * 1px) + 2px for border */
-    height: 543px; /* (32 * 16px) + (31 * 1px) + 2px for border */
+    margin: 0 auto;
 }
 
 .pixel {
@@ -37,25 +59,78 @@ body.dark-mode {
     cursor: pointer;
 }
 
-#clearButton, #darkModeToggle, #exportButton {
-    margin-left: 10px;
+button, #gridSize {
     background-color: #f0f0f0;
     border: 1px solid #999;
-    padding: 5px 10px;
+    padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+    height: 40px;
+    box-sizing: border-box;
+    font-size: 14px;
+    /* Remove width: 100%; */
 }
 
-.dark-mode #clearButton, .dark-mode #darkModeToggle, .dark-mode #exportButton {
+.dark-mode button, .dark-mode #gridSize {
     background-color: #555;
     color: #fff;
     border-color: #777;
 }
 
-#clearButton:hover, #darkModeToggle:hover, #exportButton:hover {
+button:hover, #gridSize:hover {
     background-color: #e0e0e0;
 }
 
-.dark-mode #clearButton:hover, .dark-mode #darkModeToggle:hover, .dark-mode #exportButton:hover {
+.dark-mode button:hover, .dark-mode #gridSize:hover {
     background-color: #666;
+}
+
+#colorPicker {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+}
+
+#colorPicker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#colorPicker::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+#colorPicker::-moz-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+#gridSize {
+    width: auto; /* Allow the select to size based on content */
+}
+
+button {
+    flex: 0 1 auto; /* Allow buttons to shrink but not grow */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 768px) {
+    .button-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
+        width: 100%; /* Full width on small screens */
+    }
 }
