@@ -10,24 +10,50 @@
     <div class="author-info">a mini-app by fernanda@midspiral</div>
     <div class="container">
         <h1>Pixel Pusher</h1>
-        <div class="controls">
-            <div class="button-row">
-                <button id="clearButton">Clear Canvas</button>
-                <button id="darkModeToggle">Dark Mode</button>
-                <button id="exportWithGridButton">Export with Grid</button>
-                <button id="exportWithoutGridButton">Export without Grid</button>
-            </div>
-            <div class="grid-size-container">
-                <select id="gridSize">
-                    <option value="16">16x16</option>
-                    <option value="32" selected>32x32</option>
-                    <option value="64">64x64</option>
-                </select>
-                <input type="color" id="colorPicker" value="#000000">
-            </div>
-            <div class="image-upload-container">
-                <input type="file" id="imageUpload" accept=".png, .webp, .jpg, .jpeg">
-                <button id="convertImageButton">Convert to Pixel Art</button>
+        <div class="card">
+            <div class="controls">
+                <div class="button-row">
+                    <button id="clearButton">Clear Canvas</button>
+                    <button id="darkModeToggle">Dark Mode</button>
+                    <button id="exportWithGridButton">Export with Grid</button>
+                    <button id="exportWithoutGridButton">Export without Grid</button>
+                </div>
+                <div class="grid-size-container">
+                    <select id="gridSize">
+                        <option value="16">16x16</option>
+                        <option value="32" selected>32x32</option>
+                        <option value="64">64x64</option>
+                        <option value="128">128x128</option>
+                    </select>
+                    <input type="color" id="colorPicker" value="#000000">
+                </div>
+                <div class="image-upload-container">
+                    <input type="file" id="imageUpload" accept=".png, .webp, .jpg, .jpeg">
+                    <button id="convertImageButton">Convert to Pixel Art</button>
+                </div>
+                <div class="image-adjustments-container">
+                    <button id="toggleAdjustments">Toggle Image Adjustments</button>
+                    <div class="image-adjustments hidden">
+                        <div class="adjustment-container">
+                            <label for="brightnessSlider">Brightness:</label>
+                            <input type="range" id="brightnessSlider" min="-100" max="100" value="0">
+                            <span id="brightnessValue">0</span>
+                            <span class="reset-icon" data-slider="brightness">↺</span>
+                        </div>
+                        <div class="adjustment-container">
+                            <label for="hueSlider">Hue:</label>
+                            <input type="range" id="hueSlider" min="0" max="360" value="0">
+                            <span id="hueValue">0</span>
+                            <span class="reset-icon" data-slider="hue">↺</span>
+                        </div>
+                        <div class="adjustment-container">
+                            <label for="saturationSlider">Saturation:</label>
+                            <input type="range" id="saturationSlider" min="-100" max="100" value="0">
+                            <span id="saturationValue">0</span>
+                            <span class="reset-icon" data-slider="saturation">↺</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="canvas"></div>
