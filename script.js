@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isDarkMode = false;
     let pixelSize = parseInt(gridSizeSelect.value);
+    let originalImageData = null;
 
     function createGrid(width = pixelSize, height = pixelSize) {
         canvas.innerHTML = ''; // Clear the existing grid
@@ -88,10 +89,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateColors();
     });
 
-    // Grid size change functionality
+    // Modify the grid size change functionality
     gridSizeSelect.addEventListener('change', (e) => {
         pixelSize = parseInt(e.target.value);
-        createGrid(pixelSize, pixelSize);
+        if (originalImageData) {
+            resizeAndDrawImage(originalImageData, pixelSize, pixelSize);
+        } else {
+            createGrid(pixelSize, pixelSize);
+        }
     });
 
     // Export as PNG functionality
@@ -161,41 +166,55 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    const maxSize = 64; // Maximum grid size
-                    const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
-                    const scaledWidth = Math.floor(img.width * scale);
-                    const scaledHeight = Math.floor(img.height * scale);
-
-                    // Update grid size to match scaled image dimensions exactly
-                    pixelSize = Math.max(scaledWidth, scaledHeight);
-                    gridSizeSelect.value = pixelSize > 64 ? 64 : pixelSize; // Ensure it's a valid option
-
-                    // Recreate the grid with the new size
-                    createGrid(scaledWidth, scaledHeight);
-
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.width = scaledWidth;
-                    canvas.height = scaledHeight;
-                    
-                    ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
-                    const imageData = ctx.getImageData(0, 0, scaledWidth, scaledHeight);
-                    
-                    const pixels = document.querySelectorAll('.pixel');
-                    pixels.forEach((pixel, index) => {
-                        const x = index % scaledWidth;
-                        const y = Math.floor(index / scaledWidth);
-                        const dataIndex = (y * scaledWidth + x) * 4;
-                        const r = imageData.data[dataIndex];
-                        const g = imageData.data[dataIndex + 1];
-                        const b = imageData.data[dataIndex + 2];
-                        const color = `rgb(${r},${g},${b})`;
-                        pixel.style.backgroundColor = color;
-                    });
+                    originalImageData = {
+                        width: img.width,
+                        height: img.height,
+                        data: e.target.result
+                    };
+                    resizeAndDrawImage(originalImageData, pixelSize, pixelSize);
                 };
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
         }
+    }
+
+    function resizeAndDrawImage(imageData, gridWidth, gridHeight) {
+        const img = new Image();
+        img.onload = function() {
+            const aspectRatio = img.width / img.height;
+            let scaledWidth, scaledHeight;
+
+            if (aspectRatio > 1) {
+                scaledWidth = gridWidth;
+                scaledHeight = Math.floor(gridWidth / aspectRatio);
+            } else {
+                scaledHeight = gridHeight;
+                scaledWidth = Math.floor(gridHeight * aspectRatio);
+            }
+
+            createGrid(scaledWidth, scaledHeight);
+
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = scaledWidth;
+            tempCanvas.height = scaledHeight;
+            
+            tempCtx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+            const scaledImageData = tempCtx.getImageData(0, 0, scaledWidth, scaledHeight);
+            
+            const pixels = document.querySelectorAll('.pixel');
+            pixels.forEach((pixel, index) => {
+                const x = index % scaledWidth;
+                const y = Math.floor(index / scaledWidth);
+                const dataIndex = (y * scaledWidth + x) * 4;
+                const r = scaledImageData.data[dataIndex];
+                const g = scaledImageData.data[dataIndex + 1];
+                const b = scaledImageData.data[dataIndex + 2];
+                const color = `rgb(${r},${g},${b})`;
+                pixel.style.backgroundColor = color;
+            });
+        };
+        img.src = imageData.data;
     }
 });
