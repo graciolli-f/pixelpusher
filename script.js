@@ -50,10 +50,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function togglePixelColor(pixel) {
         const currentColor = pixel.style.backgroundColor;
-        if (isDefaultColor(currentColor)) {
-            pixel.style.backgroundColor = colorPicker.value;
+        const selectedColor = colorPicker.value;
+        
+        if (!pixel.dataset.originalColor) {
+            pixel.dataset.originalColor = currentColor;
+        }
+
+        if (pixel.dataset.modified === 'true' && currentColor !== pixel.dataset.originalColor) {
+            // If the pixel was modified, revert to the original color
+            pixel.style.backgroundColor = pixel.dataset.originalColor;
+            pixel.dataset.modified = 'false';
         } else {
-            pixel.style.backgroundColor = getDefaultColor();
+            // Change to the selected color
+            pixel.style.backgroundColor = selectedColor;
+            pixel.dataset.modified = 'true';
         }
     }
 
@@ -78,7 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear canvas functionality
     clearButton.addEventListener('click', () => {
         document.querySelectorAll('.pixel').forEach(pixel => {
-            pixel.style.backgroundColor = getDefaultColor();
+            if (pixel.dataset.originalColor) {
+                pixel.style.backgroundColor = pixel.dataset.originalColor;
+                pixel.dataset.modified = 'false';
+            } else {
+                pixel.style.backgroundColor = getDefaultColor();
+            }
         });
     });
 
@@ -211,8 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const r = scaledImageData.data[dataIndex];
                 const g = scaledImageData.data[dataIndex + 1];
                 const b = scaledImageData.data[dataIndex + 2];
-                const color = `rgb(${r},${g},${b})`;
+                const color = `rgb(${r}, ${g}, ${b})`;
                 pixel.style.backgroundColor = color;
+                pixel.dataset.originalColor = color; // Store the original color
+                pixel.dataset.modified = 'false'; // Initialize as unmodified
             });
         };
         img.src = imageData.data;
