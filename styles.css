@@ -17,8 +17,7 @@ body.dark-mode {
 
 .container {
     text-align: center;
-    width: 100%;
-    max-width: 543px;
+    width: 511px; /* Set to exactly 511px */
     padding: 20px;
 }
 
@@ -29,7 +28,8 @@ body.dark-mode {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 20px;
-    width: 100%;
+    width: 511px; /* Set to exactly 511px */
+    box-sizing: border-box; /* Include padding in the width */
 }
 
 .dark-mode .card {
@@ -53,8 +53,21 @@ body.dark-mode {
 
 .grid-size-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+    gap: 10px;
+}
+
+.grid-size-container label {
+    font-size: 12px; /* Changed from 10px to match other buttons */
+    white-space: nowrap;
+    font-weight: normal; /* Add this to match button text weight */
+}
+
+#gridSize {
+    width: 60px; /* Reduced width (adjust as needed) */
+    padding: 4px;
+    font-size: 12px;
 }
 
 /* Button and input styles */
@@ -86,8 +99,8 @@ button:hover, #gridSize:hover {
 }
 
 #colorPicker {
-    width: 36px;
-    height: 36px;
+    width: 28px; /* Make it square and match the height of the dropdown */
+    height: 28px;
     padding: 0;
     border: none;
     border-radius: 4px;
@@ -96,6 +109,20 @@ button:hover, #gridSize:hover {
     -moz-appearance: none;
     appearance: none;
     background-color: transparent;
+}
+
+#colorPicker::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+#colorPicker::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+#colorPicker::-moz-color-swatch {
+    border: none;
+    border-radius: 4px;
 }
 
 /* Image upload styles */
@@ -259,4 +286,15 @@ body.dark-mode .author-info:hover {
     button, #gridSize, #imageUpload {
         width: 100%;
     }
+}
+
+/* Add this to your existing CSS */
+.button-row button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 36px; /* Ensure a minimum height */
+    padding: 4px 8px; /* Adjust padding to allow for two lines of text */
+    line-height: 1.2; /* Adjust line height for better readability */
 }
