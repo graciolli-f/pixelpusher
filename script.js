@@ -36,7 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add click event listener to the canvas
     canvas.addEventListener('click', (e) => {
         if (e.target.classList.contains('pixel')) {
-            e.target.style.backgroundColor = colorPicker.value;
+            const currentColor = e.target.style.backgroundColor;
+            if (isDefaultColor(currentColor)) {
+                e.target.style.backgroundColor = colorPicker.value;
+            } else {
+                e.target.style.backgroundColor = getDefaultColor();
+            }
         }
     });
 
@@ -44,9 +49,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDrawing = false;
     canvas.addEventListener('mousedown', () => isDrawing = true);
     canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseleave', () => isDrawing = false);
     canvas.addEventListener('mouseover', (e) => {
         if (isDrawing && e.target.classList.contains('pixel')) {
-            e.target.style.backgroundColor = colorPicker.value;
+            const currentColor = e.target.style.backgroundColor;
+            if (isDefaultColor(currentColor)) {
+                e.target.style.backgroundColor = colorPicker.value;
+            } else {
+                e.target.style.backgroundColor = getDefaultColor();
+            }
         }
     });
 
@@ -121,13 +132,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateColors() {
         canvas.style.backgroundColor = isDarkMode ? '#666' : '#ccc';
         document.querySelectorAll('.pixel').forEach(pixel => {
-            if (!pixel.style.backgroundColor || 
-                pixel.style.backgroundColor === 'white' || 
-                pixel.style.backgroundColor === 'rgb(255, 255, 255)' ||
-                pixel.style.backgroundColor === '#444' ||
-                pixel.style.backgroundColor === 'rgb(68, 68, 68)') {
-                pixel.style.backgroundColor = isDarkMode ? '#444' : 'white';
+            if (isDefaultColor(pixel.style.backgroundColor)) {
+                pixel.style.backgroundColor = getDefaultColor();
             }
         });
+    }
+
+    function isDefaultColor(color) {
+        return !color || color === 'white' || color === 'rgb(255, 255, 255)' ||
+               color === '#444' || color === 'rgb(68, 68, 68)';
+    }
+
+    function getDefaultColor() {
+        return isDarkMode ? '#444' : 'white';
     }
 });
