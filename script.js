@@ -12,23 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let isDarkMode = false;
     let pixelSize = parseInt(gridSizeSelect.value);
 
-    function createGrid() {
+    function createGrid(width = pixelSize, height = pixelSize) {
         canvas.innerHTML = ''; // Clear the existing grid
-        canvas.style.gridTemplateColumns = `repeat(${pixelSize}, 1fr)`;
+        canvas.style.gridTemplateColumns = `repeat(${width}, 1fr)`;
         
-        const pixelDimension = Math.floor(543 / pixelSize) - 1;
-        canvas.style.width = `${pixelSize * (pixelDimension + 1) - 1}px`;
-        canvas.style.height = `${pixelSize * (pixelDimension + 1) - 1}px`;
+        const maxDimension = 543;
+        const pixelDimension = Math.max(1, Math.floor(maxDimension / Math.max(width, height)) - 1);
+        canvas.style.width = `${width * (pixelDimension + 1) - 1}px`;
+        canvas.style.height = `${height * (pixelDimension + 1) - 1}px`;
 
-        for (let i = 0; i < pixelSize * pixelSize; i++) {
+        const gridColor = isDarkMode ? '#555' : '#ccc';
+        canvas.style.backgroundColor = gridColor;
+
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < width * height; i++) {
             const pixel = document.createElement('div');
             pixel.classList.add('pixel');
             pixel.style.width = `${pixelDimension}px`;
             pixel.style.height = `${pixelDimension}px`;
-            canvas.appendChild(pixel);
+            pixel.style.backgroundColor = getDefaultColor();
+            fragment.appendChild(pixel);
         }
-
-        updateColors();
+        canvas.appendChild(fragment);
     }
 
     createGrid();
@@ -86,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Grid size change functionality
     gridSizeSelect.addEventListener('change', (e) => {
         pixelSize = parseInt(e.target.value);
-        createGrid();
+        createGrid(pixelSize, pixelSize);
     });
 
     // Export as PNG functionality
@@ -138,7 +143,8 @@ document.addEventListener('DOMContentLoaded', () => {
     exportWithoutGridButton.addEventListener('click', () => exportAsPNG(false));
 
     function updateColors() {
-        canvas.style.backgroundColor = isDarkMode ? '#666' : '#ccc';
+        const gridColor = isDarkMode ? '#555' : '#ccc';
+        canvas.style.backgroundColor = gridColor;
         document.querySelectorAll('.pixel').forEach(pixel => {
             if (isDefaultColor(pixel.style.backgroundColor)) {
                 pixel.style.backgroundColor = getDefaultColor();
@@ -155,26 +161,35 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
+                    const maxSize = 64; // Maximum grid size
+                    const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
+                    const scaledWidth = Math.floor(img.width * scale);
+                    const scaledHeight = Math.floor(img.height * scale);
+
+                    // Update grid size to match scaled image dimensions exactly
+                    pixelSize = Math.max(scaledWidth, scaledHeight);
+                    gridSizeSelect.value = pixelSize > 64 ? 64 : pixelSize; // Ensure it's a valid option
+
+                    // Recreate the grid with the new size
+                    createGrid(scaledWidth, scaledHeight);
+
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    const gridSizeValue = parseInt(gridSize.value);
+                    canvas.width = scaledWidth;
+                    canvas.height = scaledHeight;
                     
-                    canvas.width = gridSizeValue;
-                    canvas.height = gridSizeValue;
-                    
-                    ctx.drawImage(img, 0, 0, gridSizeValue, gridSizeValue);
-                    const imageData = ctx.getImageData(0, 0, gridSizeValue, gridSizeValue);
+                    ctx.drawImage(img, 0, 0, scaledWidth, scaledHeight);
+                    const imageData = ctx.getImageData(0, 0, scaledWidth, scaledHeight);
                     
                     const pixels = document.querySelectorAll('.pixel');
                     pixels.forEach((pixel, index) => {
-                        const x = index % gridSizeValue;
-                        const y = Math.floor(index / gridSizeValue);
-                        const dataIndex = (y * gridSizeValue + x) * 4;
+                        const x = index % scaledWidth;
+                        const y = Math.floor(index / scaledWidth);
+                        const dataIndex = (y * scaledWidth + x) * 4;
                         const r = imageData.data[dataIndex];
                         const g = imageData.data[dataIndex + 1];
                         const b = imageData.data[dataIndex + 2];
                         const color = `rgb(${r},${g},${b})`;
-                        
                         pixel.style.backgroundColor = color;
                     });
                 };
