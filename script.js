@@ -3,14 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorPicker = document.getElementById('colorPicker');
     const clearButton = document.getElementById('clearButton');
     const darkModeToggle = document.getElementById('darkModeToggle');
-    const exportButton = document.getElementById('exportButton');
     const gridSizeSelect = document.getElementById('gridSize');
+    const exportWithGridButton = document.getElementById('exportWithGridButton');
+    const exportWithoutGridButton = document.getElementById('exportWithoutGridButton');
 
     let isDarkMode = false;
     let pixelSize = parseInt(gridSizeSelect.value);
-
-    const exportWithGridButton = document.getElementById('exportWithGridButton');
-    const exportWithoutGridButton = document.getElementById('exportWithoutGridButton');
 
     function createGrid() {
         canvas.innerHTML = '';
@@ -33,38 +31,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     createGrid();
 
-    // Add click event listener to the canvas
+    function isDefaultColor(color) {
+        return !color || color === 'white' || color === 'rgb(255, 255, 255)' ||
+               color === '#444' || color === 'rgb(68, 68, 68)';
+    }
+
+    function getDefaultColor() {
+        return isDarkMode ? '#444' : 'white';
+    }
+
+    function togglePixelColor(pixel) {
+        const currentColor = pixel.style.backgroundColor;
+        if (isDefaultColor(currentColor)) {
+            pixel.style.backgroundColor = colorPicker.value;
+        } else {
+            pixel.style.backgroundColor = getDefaultColor();
+        }
+    }
+
+    // Click event listener for the canvas
     canvas.addEventListener('click', (e) => {
         if (e.target.classList.contains('pixel')) {
-            const currentColor = e.target.style.backgroundColor;
-            if (isDefaultColor(currentColor)) {
-                e.target.style.backgroundColor = colorPicker.value;
-            } else {
-                e.target.style.backgroundColor = getDefaultColor();
-            }
+            togglePixelColor(e.target);
         }
     });
 
-    // Add mouseover event listener for drag drawing
+    // Mouseover event listener for drag drawing
     let isDrawing = false;
     canvas.addEventListener('mousedown', () => isDrawing = true);
     canvas.addEventListener('mouseup', () => isDrawing = false);
     canvas.addEventListener('mouseleave', () => isDrawing = false);
     canvas.addEventListener('mouseover', (e) => {
         if (isDrawing && e.target.classList.contains('pixel')) {
-            const currentColor = e.target.style.backgroundColor;
-            if (isDefaultColor(currentColor)) {
-                e.target.style.backgroundColor = colorPicker.value;
-            } else {
-                e.target.style.backgroundColor = getDefaultColor();
-            }
+            togglePixelColor(e.target);
         }
     });
 
     // Clear canvas functionality
     clearButton.addEventListener('click', () => {
         document.querySelectorAll('.pixel').forEach(pixel => {
-            pixel.style.backgroundColor = isDarkMode ? '#444' : 'white';
+            pixel.style.backgroundColor = getDefaultColor();
         });
     });
 
@@ -97,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pixels.forEach((pixel, index) => {
             const x = (index % gridSize) * pixelSize;
             const y = Math.floor(index / gridSize) * pixelSize;
-            ctx.fillStyle = pixel.style.backgroundColor || 'white';
+            ctx.fillStyle = pixel.style.backgroundColor || getDefaultColor();
             ctx.fillRect(x, y, pixelSize, pixelSize);
         });
 
@@ -136,14 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
                 pixel.style.backgroundColor = getDefaultColor();
             }
         });
-    }
-
-    function isDefaultColor(color) {
-        return !color || color === 'white' || color === 'rgb(255, 255, 255)' ||
-               color === '#444' || color === 'rgb(68, 68, 68)';
-    }
-
-    function getDefaultColor() {
-        return isDarkMode ? '#444' : 'white';
     }
 });
