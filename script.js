@@ -72,10 +72,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (pixel.dataset.modified === 'true' && currentColor !== pixel.dataset.originalColor) {
-            // If the pixel was modified, revert to the original color with brightness applied
-            const [r, g, b] = pixel.dataset.originalColor.match(/\d+/g).map(Number);
-            const adjustedColor = adjustColor(r, g, b, brightness, hue, saturation);
-            pixel.style.backgroundColor = `rgb(${adjustedColor.join(',')})`;
+            // If the pixel was modified, revert to the original color
+            pixel.style.backgroundColor = pixel.dataset.originalColor;
             pixel.dataset.modified = 'false';
         } else {
             // Change to the selected color
