@@ -86,16 +86,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Clear canvas functionality
-    clearButton.addEventListener('click', () => {
+    function resetCanvas() {
+        originalImageData = null;
+        pixelSize = parseInt(gridSizeSelect.value);
+        createGrid(pixelSize, pixelSize);
+        imageUpload.value = ''; // Clear the file input
+
         document.querySelectorAll('.pixel').forEach(pixel => {
-            if (pixel.dataset.originalColor) {
-                pixel.style.backgroundColor = pixel.dataset.originalColor;
-                pixel.dataset.modified = 'false';
-            } else {
-                pixel.style.backgroundColor = getDefaultColor();
-            }
+            pixel.style.backgroundColor = getDefaultColor();
+            delete pixel.dataset.originalColor;
+            delete pixel.dataset.modified;
         });
-    });
+    }
+
+    clearButton.addEventListener('click', resetCanvas);
 
     // Dark mode toggle functionality
     darkModeToggle.addEventListener('click', () => {
