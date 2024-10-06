@@ -6,12 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const gridSizeSelect = document.getElementById('gridSize');
     const exportWithGridButton = document.getElementById('exportWithGridButton');
     const exportWithoutGridButton = document.getElementById('exportWithoutGridButton');
+    const imageUpload = document.getElementById('imageUpload');
+    const convertImageButton = document.getElementById('convertImageButton');
 
     let isDarkMode = false;
     let pixelSize = parseInt(gridSizeSelect.value);
 
     function createGrid() {
-        canvas.innerHTML = '';
+        canvas.innerHTML = ''; // Clear the existing grid
         canvas.style.gridTemplateColumns = `repeat(${pixelSize}, 1fr)`;
         
         const pixelDimension = Math.floor(543 / pixelSize) - 1;
@@ -142,5 +144,43 @@ document.addEventListener('DOMContentLoaded', () => {
                 pixel.style.backgroundColor = getDefaultColor();
             }
         });
+    }
+
+    convertImageButton.addEventListener('click', convertUploadedImage);
+
+    function convertUploadedImage() {
+        const file = imageUpload.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const gridSizeValue = parseInt(gridSize.value);
+                    
+                    canvas.width = gridSizeValue;
+                    canvas.height = gridSizeValue;
+                    
+                    ctx.drawImage(img, 0, 0, gridSizeValue, gridSizeValue);
+                    const imageData = ctx.getImageData(0, 0, gridSizeValue, gridSizeValue);
+                    
+                    const pixels = document.querySelectorAll('.pixel');
+                    pixels.forEach((pixel, index) => {
+                        const x = index % gridSizeValue;
+                        const y = Math.floor(index / gridSizeValue);
+                        const dataIndex = (y * gridSizeValue + x) * 4;
+                        const r = imageData.data[dataIndex];
+                        const g = imageData.data[dataIndex + 1];
+                        const b = imageData.data[dataIndex + 2];
+                        const color = `rgb(${r},${g},${b})`;
+                        
+                        pixel.style.backgroundColor = color;
+                    });
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
 });

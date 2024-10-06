@@ -164,3 +164,11 @@ button {
         width: 100%;
     }
 }
+
+.image-upload-container {
+    margin-top: 10px;
+}
+
+#imageUpload {
+    margin-right: 10px;
+}
