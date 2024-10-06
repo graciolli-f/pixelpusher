@@ -177,6 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function convertUploadedImage() {
         const file = imageUpload.files[0];
         if (file) {
+            const validTypes = ['image/png', 'image/webp', 'image/jpeg'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please upload a PNG, WebP, or JPEG image.');
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
