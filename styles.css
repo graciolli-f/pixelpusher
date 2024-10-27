@@ -1,300 +1,334 @@
 /* General styles */
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-    transition: background-color 0.3s, color 0.3s;
+	font-family: Arial, sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	margin: 0;
+	background-color: #f0f0f0;
+	transition: background-color 0.3s, color 0.3s;
 }
 
 body.dark-mode {
-    background-color: #333;
-    color: #fff;
+	background-color: #333;
+	color: #fff;
 }
 
 .container {
-    text-align: center;
-    width: 511px; /* Set to exactly 511px */
-    padding: 20px;
+	text-align: center;
+	width: 511px; /* Set to exactly 511px */
+	padding: 20px;
 }
 
 /* Card styles */
 .card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 511px; /* Set to exactly 511px */
-    box-sizing: border-box; /* Include padding in the width */
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	padding: 20px;
+	margin-bottom: 20px;
+	width: 511px; /* Set to exactly 511px */
+	box-sizing: border-box; /* Include padding in the width */
 }
 
 .dark-mode .card {
-    background-color: #444;
+	background-color: #444;
 }
 
 /* Controls styles */
 .controls {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 15px;
 }
 
 .button-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	flex-wrap: wrap;
 }
 
 .grid-size-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
 }
 
 .grid-size-container label {
-    font-size: 12px; /* Changed from 10px to match other buttons */
-    white-space: nowrap;
-    font-weight: normal; /* Add this to match button text weight */
+	font-size: 12px; /* Changed from 10px to match other buttons */
+	white-space: nowrap;
+	font-weight: normal; /* Add this to match button text weight */
 }
 
 #gridSize {
-    width: 60px; /* Reduced width (adjust as needed) */
-    padding: 4px;
-    font-size: 12px;
+	width: 60px; /* Reduced width (adjust as needed) */
+	padding: 4px;
+	font-size: 12px;
 }
 
 /* Button and input styles */
-button, #gridSize, #imageUpload {
-    background-color: #f0f0f0;
-    border: 1px solid #999;
-    padding: 8px 12px;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-    border-radius: 4px;
-    height: 36px;
-    box-sizing: border-box;
-    font-size: 12px;
-    flex: 1;
+button,
+#gridSize,
+#imageUpload {
+	background-color: #f0f0f0;
+	border: 1px solid #999;
+	padding: 8px 12px;
+	cursor: pointer;
+	transition: background-color 0.3s, color 0.3s;
+	border-radius: 4px;
+	height: 36px;
+	box-sizing: border-box;
+	font-size: 12px;
+	flex: 1;
 }
 
-.dark-mode button, .dark-mode #gridSize, .dark-mode #imageUpload {
-    background-color: #555;
-    color: #fff;
-    border-color: #777;
+.dark-mode button,
+.dark-mode #gridSize,
+.dark-mode #imageUpload {
+	background-color: #555;
+	color: #fff;
+	border-color: #777;
 }
 
-button:hover, #gridSize:hover {
-    background-color: #e0e0e0;
+button:hover,
+#gridSize:hover {
+	background-color: #e0e0e0;
 }
 
-.dark-mode button:hover, .dark-mode #gridSize:hover {
-    background-color: #666;
+.dark-mode button:hover,
+.dark-mode #gridSize:hover {
+	background-color: #666;
 }
 
 #colorPicker {
-    width: 28px; /* Make it square and match the height of the dropdown */
-    height: 28px;
-    padding: 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: transparent;
+	width: 28px; /* Make it square and match the height of the dropdown */
+	height: 28px;
+	padding: 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-color: transparent;
 }
 
 #colorPicker::-webkit-color-swatch-wrapper {
-    padding: 0;
+	padding: 0;
 }
 
 #colorPicker::-webkit-color-swatch {
-    border: none;
-    border-radius: 4px;
+	border: none;
+	border-radius: 4px;
 }
 
 #colorPicker::-moz-color-swatch {
-    border: none;
-    border-radius: 4px;
+	border: none;
+	border-radius: 4px;
 }
 
 /* Image upload styles */
 .image-upload-container {
-    display: flex;
-    gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 #imageUpload {
-    flex: 2;
+	flex: 2;
 }
 
 #convertImageButton {
-    flex: 1;
+	flex: 1;
 }
 
 /* Image adjustments styles */
 .image-adjustments-container {
-    width: 100%;
+	width: 100%;
 }
 
 #toggleAdjustments {
-    width: 100%;
-    margin-bottom: 10px;
+	width: 100%;
+	margin-bottom: 10px;
 }
 
 .image-adjustments {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-    max-height: 1000px;
-    opacity: 1;
-    overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+	max-height: 1000px;
+	opacity: 1;
+	overflow: hidden;
 }
 
 .image-adjustments.hidden {
-    max-height: 0;
-    opacity: 0;
+	max-height: 0;
+	opacity: 0;
 }
 
 .adjustment-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 12px;
 }
 
 .adjustment-container label {
-    width: 80px;
-    text-align: left;
+	width: 80px;
+	text-align: left;
 }
 
-.adjustment-container input[type="range"] {
-    flex: 1;
-    margin: 0;
+.adjustment-container input[type='range'] {
+	flex: 1;
+	margin: 0;
 }
 
 .adjustment-container span {
-    width: 30px;
-    text-align: right;
+	width: 30px;
+	text-align: right;
 }
 
 /* Slider styles */
-input[type="range"] {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 100%;
-    height: 2px;
-    background: #ddd;
-    outline: none;
-    opacity: 0.7;
-    transition: opacity 0.2s;
+input[type='range'] {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 100%;
+	height: 2px;
+	background: #ddd;
+	outline: none;
+	opacity: 0.7;
+	transition: opacity 0.2s;
 }
 
-input[type="range"]:hover {
-    opacity: 1;
+input[type='range']:hover {
+	opacity: 1;
 }
 
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #4caf50;
+	cursor: pointer;
 }
 
-input[type="range"]::-moz-range-thumb {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-    border: none;
+input[type='range']::-moz-range-thumb {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: #4caf50;
+	cursor: pointer;
+	border: none;
 }
 
 .reset-icon {
-    cursor: pointer;
-    font-size: 16px;
-    color: #666;
-    transition: color 0.3s;
+	cursor: pointer;
+	font-size: 16px;
+	color: #666;
+	transition: color 0.3s;
 }
 
 .reset-icon:hover {
-    color: #4CAF50;
+	color: #4caf50;
 }
 
 /* Canvas styles */
 #canvas {
-    display: grid;
-    grid-template-columns: repeat(32, 1fr);
-    grid-gap: 1px;
-    border: 1px solid #999;
-    margin: 0 auto;
+	display: grid;
+	grid-template-columns: repeat(32, 1fr);
+	grid-gap: 1px;
+	border: 1px solid #999;
+	margin: 0 auto;
 }
 
 .pixel {
-    aspect-ratio: 1;
-    cursor: pointer;
+	aspect-ratio: 1;
+	cursor: pointer;
 }
 
 /* Author info styles */
 .author-info {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    font-size: 0.8em;
-    font-weight: 700;
-    color: #666;
-    z-index: 1000;
-    padding: 5px 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
-    transition: background-color 0.3s, color 0.3s;
+	position: fixed;
+	top: 10px;
+	right: 10px;
+	font-size: 0.8em;
+	font-weight: 700;
+	color: #666;
+	z-index: 1000;
+	padding: 5px 10px;
+	background-color: rgba(255, 255, 255, 0.8);
+	border-radius: 5px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+	transition: background-color 0.3s, color 0.3s;
 }
 
 .author-info:hover {
-    background-color: rgb(255, 215, 0);
-    color: #000;
+	background-color: rgb(255, 215, 0);
+	color: #000;
 }
 
 body.dark-mode .author-info {
-    color: #aaa;
-    background-color: rgba(51, 51, 51, 0.8);
+	color: #aaa;
+	background-color: rgba(51, 51, 51, 0.8);
 }
 
 body.dark-mode .author-info:hover {
-    background-color: rgb(255, 215, 0);
-    color: #000;
+	background-color: rgb(255, 215, 0);
+	color: #000;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-    .button-row {
-        flex-direction: column;
-    }
+	.button-row {
+		flex-direction: column;
+	}
 
-    button, #gridSize, #imageUpload {
-        width: 100%;
-    }
+	button,
+	#gridSize,
+	#imageUpload {
+		width: 100%;
+	}
 }
 
 /* Add this to your existing CSS */
 .button-row button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 36px; /* Ensure a minimum height */
-    padding: 4px 8px; /* Adjust padding to allow for two lines of text */
-    line-height: 1.2; /* Adjust line height for better readability */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	min-height: 36px; /* Ensure a minimum height */
+	padding: 4px 8px; /* Adjust padding to allow for two lines of text */
+	line-height: 1.2; /* Adjust line height for better readability */
+}
+.author-info {
+	margin-bottom: 5px;
+}
+
+.coffee-container {
+	background-color: rgb(255, 215, 0);
+	padding: 5px 10px;
+	border-radius: 4px;
+	font-size: 0.8em;
+	display: inline-block;
+	margin-bottom: 15px;
+	position: fixed;
+	top: 40px;
+	right: 10px;
+	color: #666;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+	font-weight: 700;
+}
+
+.coffee-container a {
+	color: #000;
+	text-decoration: underline;
+}
+a {
+	color: #000;
 }
